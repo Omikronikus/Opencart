@@ -1,0 +1,2 @@
+2018-08-07 15:33:08 - PHP Warning:  mysqli::query(): MySQL server has gone away in C:\OSPanel\domains\localhost\Shop\system\library\db\mysqli.php on line 18
+2018-08-07 15:33:08 - PHP Warning:  mysqli::query(): Error reading result set's header in C:\OSPanel\domains\localhost\Shop\system\library\db\mysqli.php on line 18

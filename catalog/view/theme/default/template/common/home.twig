@@ -1,0 +1,133 @@
+{{ header }}
+<div id="common-home" class="container">
+  <div class="row">{{ column_left }}
+    {% if column_left and column_right %}
+    {% set class = 'col-sm-6' %}
+    {% elseif column_left or column_right %}
+    {% set class = 'col-sm-9' %}
+    {% else %}
+    {% set class = 'col-sm-12' %}
+    {% endif %}
+    <div id="content" class="{{ class }}">{{ content_top }}
+
+        <div class="mixitup-container">
+            <div class="controls projects__buttons">
+                <ul>
+                    {% for sale in sales %}
+                        <li class=" filter projects__buttons-button" data-id="{{ sale.category_id }}" data-filter=".{{ sale.name }}"> {{ sale.name }}</li>
+                    {% endfor %}
+
+                </ul>
+            </div>
+
+            <div class="container margin-top">
+                <div class="row ">
+                    <div class="my-owl-carousel" id="response">
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+
+
+    {{ content_bottom }}</div>
+    {{ column_right }}</div>
+</div>
+
+{{ footer }}
+
+<script type="text/javascript">
+
+    // language=JQuery-CSS
+    $filter_btns = $('.filter');
+
+    var flag = false;
+
+    if($filter_btns.hasClass('mixitup-control-active')){
+        flag = true;
+    }
+
+    if(flag === false){
+        $filter_btns.first().addClass('mixitup-control-active');
+    }
+
+    $active = $('.mixitup-control-active');
+    // alert($active);
+
+    owl = $('.my-owl-carousel');
+
+    if( $filter_btns.hasClass('mixitup-control-active')) {
+
+        $.ajax({
+
+            url: 'index.php?route=common/home/ajaxGetProducts&category_id=' + $active.data('id'),
+            dataType: 'json',
+            method: 'GET',
+            success: function (json) {
+
+                var html = '';
+
+                if (json['products']) {
+                    for (var i = 0; i < json['products'].length; i++) {
+                        html += '<div class="item">' + json['products'][i]['name'] + '</div>';
+                    }
+                }
+
+
+                owl.append(html);
+
+
+                owl.owlCarousel({
+                    nav: true,
+                    items: 3,
+                });
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                $('#response').html(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+            }
+        });
+
+    }
+
+
+    $('.filter').on('click', function () {
+        if(! $(this).hasClass('mixitup-control-active')) {
+
+            $.ajax({
+                url: 'index.php?route=common/home/ajaxGetProducts&user_token={{ user_token }}&category_id=' + $(this).data('id'),
+                dataType: 'json',
+                method: 'GET',
+                success: function (json) {
+
+
+
+                    var html = '';
+
+                    if (json['products']) {
+                        for (var i = 0; i < json['products'].length; i++) {
+                            html += '<div class="item">' + json['products'][i]['name'] + '</div>';
+                        }
+                    }
+
+                    owl.trigger('destroy.owl.carousel');
+                    owl.empty();
+                    owl.append(html);
+
+
+
+                    owl.owlCarousel({
+                        nav: true,
+                        items: 3,
+                    });
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    $('#response').html(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+                }
+            });
+
+        }
+    });
+</script>
