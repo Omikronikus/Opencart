@@ -22,9 +22,20 @@
 
             <div class="container margin-top">
                 <div class="row ">
-                    <div class="my-owl-carousel" id="response">
 
+                    <div class="swiper-viewport">
+                        <div id="my-carousel" class="swiper-container">
+                            <div class="swiper-wrapper">
+
+                                </div>
+                        </div>
+                        <div class="swiper-pagination carousel-pag"></div>
+                        <div class="swiper-pager">
+                            <div class="swiper-button-next"></div>
+                            <div class="swiper-button-prev"></div>
+                        </div>
                     </div>
+
 
                 </div>
             </div>
@@ -41,6 +52,8 @@
 
 <script type="text/javascript">
 
+
+
     // language=JQuery-CSS
     $filter_btns = $('.filter');
 
@@ -55,9 +68,10 @@
     }
 
     $active = $('.mixitup-control-active');
-    // alert($active);
 
-    owl = $('.my-owl-carousel');
+
+
+
 
     if( $filter_btns.hasClass('mixitup-control-active')) {
 
@@ -70,20 +84,36 @@
 
                 var html = '';
 
+                // if (json['products']) {
+                //     for (var i = 0; i < json['products'].length; i++) {
+                //         html += '<div class="item">' + json['products'][i]['name'] + '</div>';
+                //     }
+                // }
                 if (json['products']) {
                     for (var i = 0; i < json['products'].length; i++) {
-                        html += '<div class="item">' + json['products'][i]['name'] + '</div>';
+                        html += '<div class="swiper-slide text-center">'+ json['products'][i]['name'] +'</div>';
                     }
                 }
 
+                $('.swiper-wrapper').append(html);
 
-                owl.append(html);
-
-
-                owl.owlCarousel({
-                    nav: true,
-                    items: 3,
+                $('#my-carousel').swiper({
+                    mode: 'horizontal',
+                    slidesPerView: 3,
+                    pagination: '.carousel-pag',
+                    paginationClickable: true,
+                    nextButton: '.swiper-button-next',
+                    prevButton: '.swiper-button-prev',
+                    autoplay: 2500,
+                    loop: true
                 });
+                //
+                //
+                // owl.owlCarousel({
+                //     loop: true,
+                //     nav: true,
+                //     items: 3,
+                // });
             },
             error: function (xhr, ajaxOptions, thrownError) {
                 $('#response').html(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
@@ -108,20 +138,34 @@
 
                     if (json['products']) {
                         for (var i = 0; i < json['products'].length; i++) {
-                            html += '<div class="item">' + json['products'][i]['name'] + '</div>';
+                            html += '<div class="swiper-slide text-center">'+ json['products'][i]['name'] +'</div>';
                         }
                     }
+                    $('#my-carousel').destroy();
+                    $('.swiper-wrapper').append(html);
 
-                    owl.trigger('destroy.owl.carousel');
-                    owl.empty();
-                    owl.append(html);
-
-
-
-                    owl.owlCarousel({
-                        nav: true,
-                        items: 3,
+                    $('#my-carousel').swiper({
+                        mode: 'horizontal',
+                        slidesPerView: 3,
+                        pagination: '.carousel-pag',
+                        paginationClickable: true,
+                        nextButton: '.swiper-button-next',
+                        prevButton: '.swiper-button-prev',
+                        autoplay: 2500,
+                        loop: true
                     });
+
+                    // owl.trigger('destroy.owl.carousel');
+                    // owl.empty();
+                    // owl.append(html);
+                    //
+                    //
+                    //
+                    // owl.owlCarousel({
+                    //     loop: true,
+                    //     nav: true,
+                    //     items: 3,
+                    // });
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
                     $('#response').html(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
