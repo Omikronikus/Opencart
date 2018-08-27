@@ -27,7 +27,7 @@
                         <div id="my-carousel" class="swiper-container">
                             <div class="swiper-wrapper">
 
-                                </div>
+                            </div>
                         </div>
                         <div class="swiper-pagination carousel-pag"></div>
                         <div class="swiper-pager">
@@ -84,11 +84,6 @@
 
                 var html = '';
 
-                // if (json['products']) {
-                //     for (var i = 0; i < json['products'].length; i++) {
-                //         html += '<div class="item">' + json['products'][i]['name'] + '</div>';
-                //     }
-                // }
                 if (json['products']) {
                     for (var i = 0; i < json['products'].length; i++) {
                         html += '<div class="swiper-slide text-center">'+ json['products'][i]['name'] +'</div>';
@@ -97,9 +92,9 @@
 
                 $('.swiper-wrapper').append(html);
 
-                $('#my-carousel').swiper({
-                    mode: 'horizontal',
+                swiper = new Swiper('#my-carousel',{
                     slidesPerView: 3,
+                    mode: 'horizontal',
                     pagination: '.carousel-pag',
                     paginationClickable: true,
                     nextButton: '.swiper-button-next',
@@ -107,13 +102,7 @@
                     autoplay: 2500,
                     loop: true
                 });
-                //
-                //
-                // owl.owlCarousel({
-                //     loop: true,
-                //     nav: true,
-                //     items: 3,
-                // });
+
             },
             error: function (xhr, ajaxOptions, thrownError) {
                 $('#response').html(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
@@ -141,12 +130,14 @@
                             html += '<div class="swiper-slide text-center">'+ json['products'][i]['name'] +'</div>';
                         }
                     }
-                    $('#my-carousel').destroy();
+                    swiper.destroy();
+
+                    $('.swiper-wrapper').empty();
                     $('.swiper-wrapper').append(html);
 
-                    $('#my-carousel').swiper({
-                        mode: 'horizontal',
+                    swiper = new Swiper('#my-carousel',{
                         slidesPerView: 3,
+                        mode: 'horizontal',
                         pagination: '.carousel-pag',
                         paginationClickable: true,
                         nextButton: '.swiper-button-next',
